@@ -3,7 +3,10 @@ const { hashPassword } = require("../utils");
 
 const getSiswa = async (req, res) => {
   try {
-    const { data, error } = await supabase.from("data-siswa").select();
+    const { data, error } = await supabase
+      .from("data-siswa")
+      .select()
+      .order("id", { ascending: true });
     if (error) {
       res
         .status(404)
@@ -17,7 +20,15 @@ const getSiswa = async (req, res) => {
 
 const insertSiswa = async (req, res) => {
   const data = req.body;
-  const hash = await hashPassword(data.jabatan);
+  console.log({ data });
+
+  if (!data)
+    return res
+      .status(400)
+      .json({ status: false, message: "Data tidak boleh kosong" });
+
+  const password = data.jabatan.replace(" ", "");
+  const hash = await hashPassword(password);
   const dataInsert = { ...data, password: hash };
   try {
     const { data, error } = await supabase

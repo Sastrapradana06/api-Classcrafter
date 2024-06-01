@@ -1,3 +1,6 @@
+// require("dotenv").config();
+// const jwt = require("jsonwebtoken");
+// const JWT_SECRET = process.env.JWT_SECRET;
 const supabase = require("../lib/supabase");
 
 const insertGuru = async (req, res) => {
@@ -77,10 +80,12 @@ const getGuru = async (req, res) => {
       res
         .status(404)
         .json({ status: false, message: "Gagal mengambil data guru" });
+    } else {
+      res.status(200).json({ status: true, data: data });
     }
-    res.status(200).json({ status: true, data: data });
   } catch (error) {
     console.log(error);
+    res.status(401).json({ status: false, message: "error" });
   }
 };
 
