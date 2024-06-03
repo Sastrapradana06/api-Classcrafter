@@ -12,14 +12,14 @@ const login = async (req, res) => {
       .eq("email", email)
       .single();
     if (error) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal login, email salah" });
     }
 
     const match = await comparePassword(password, data.password);
     if (!match) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal login, password salah" });
     } else {
@@ -36,7 +36,7 @@ const login = async (req, res) => {
       const token = jwt.sign({ name: dataUser.name }, JWT_SECRET, {
         expiresIn: "1h",
       });
-      res.status(200).json({
+      return res.status(200).json({
         status: true,
         message: "Berhasil login",
         data: dataUser,
@@ -45,6 +45,7 @@ const login = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 

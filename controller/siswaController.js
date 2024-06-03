@@ -8,20 +8,19 @@ const getSiswa = async (req, res) => {
       .select()
       .order("id", { ascending: true });
     if (error) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal mengambil data siswa" });
     }
-    res.status(200).json({ status: true, data: data });
+    return res.status(200).json({ status: true, data: data });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 
 const insertSiswa = async (req, res) => {
   const data = req.body;
-  console.log({ data });
-
   if (!data)
     return res
       .status(400)
@@ -36,18 +35,19 @@ const insertSiswa = async (req, res) => {
       .insert(dataInsert)
       .select();
     if (error) {
-      res.status(500).json({
+      return res.status(500).json({
         status: false,
         message: "Gagal menambahkan data siswa, email siswa sudah ada",
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       message: "Berhasil menambahkan data siswa",
       data: data,
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 
@@ -58,15 +58,16 @@ const deleteSiswa = async (req, res) => {
       .delete()
       .eq("id", req.params.id);
     if (error) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal menghapus data siswa" });
     }
-    res
+    return res
       .status(200)
       .json({ status: true, message: "Berhasil menghapus data siswa" });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 
@@ -88,22 +89,17 @@ const updateSiswa = async (req, res) => {
       .eq("id", req.body.id)
       .select();
     if (error) {
-      if (error.code === "23505") {
-        res.status(500).json({
-          status: false,
-          message: "Gagal perbarui data siswa, email siswa sudah ada",
-        });
-      }
-      res
-        .status(500)
-        .json({ status: false, message: "Gagal perbarui data siswa" });
+      return res.status(401).json({
+        status: false,
+        message: "Gagal perbarui data siswa, email siswa sudah ada",
+      });
     }
     if (data.length === 0) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Data siswa tidak ditemukan" });
     } else {
-      res.status(200).json({
+      return res.status(200).json({
         status: true,
         message: "Data siswa berhasil diperbarui",
         data: data,
@@ -111,6 +107,7 @@ const updateSiswa = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 
@@ -121,20 +118,21 @@ const getSiswaId = async (req, res) => {
       .select()
       .eq("id", req.params.id);
     if (error) {
-      res
+      return res
         .status(500)
         .json({ status: false, message: "Gagal mengambil data siswa" });
     }
 
-    if (data.length === 0) {
-      res
+    if (data && data.length === 0) {
+      return res
         .status(404)
         .json({ status: false, message: "Data siswa tidak ditemukan" });
     } else {
-      res.status(200).json({ status: true, data: data });
+      return res.status(200).json({ status: true, data: data });
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 

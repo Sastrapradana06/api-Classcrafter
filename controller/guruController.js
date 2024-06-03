@@ -11,24 +11,23 @@ const insertGuru = async (req, res) => {
       .select();
     console.log({ data, error });
     if (error) {
-      res.status(404).json({
+      return res.status(404).json({
         status: false,
         message: "Gagal menambahkan data guru, nama guru sudah ada",
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       message: "Berhasil menambahkan data guru",
       data: data,
     });
   } catch (error) {
     console.log(error);
+    return res.status(401).json({ status: false, message: error });
   }
 };
 
 const updateGuru = async (req, res) => {
-  console.log(req.body);
-  console.log(req.body.id);
   try {
     const { data, error } = await supabase
       .from("data-guru")
@@ -41,17 +40,18 @@ const updateGuru = async (req, res) => {
       .eq("id", req.body.id)
       .select();
     if (error) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal perbarui data guru" });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       message: "Data guru berhasil diperbarui",
       data: data,
     });
   } catch (error) {
     console.log(error);
+    return res.status(401).json({ status: false, message: error });
   }
 };
 
@@ -62,30 +62,34 @@ const deleteGuru = async (req, res) => {
       .delete()
       .eq("id", req.params.id);
     if (error) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal menghapus data guru" });
     }
-    res
+    return res
       .status(200)
       .json({ status: true, message: "Berhasil menghapus data guru" });
   } catch (error) {
     console.log(error);
+    return res.status(401).json({ status: false, message: error });
   }
 };
 const getGuru = async (req, res) => {
   try {
-    const { data, error } = await supabase.from("data-guru").select();
+    const { data, error } = await supabase
+      .from("data-guru")
+      .select()
+      .order("id", { ascending: true });
     if (error) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Gagal mengambil data guru" });
     } else {
-      res.status(200).json({ status: true, data: data });
+      return res.status(200).json({ status: true, data: data });
     }
   } catch (error) {
     console.log(error);
-    res.status(401).json({ status: false, message: "error" });
+    return res.status(401).json({ status: false, message: error });
   }
 };
 
@@ -96,20 +100,21 @@ const getGuruId = async (req, res) => {
       .select()
       .eq("id", req.params.id);
     if (error) {
-      res
+      return res
         .status(500)
         .json({ status: false, message: "Gagal mengambil data guru" });
     }
 
     if (data.length === 0) {
-      res
+      return res
         .status(404)
         .json({ status: false, message: "Data guru tidak ditemukan" });
     } else {
-      res.status(200).json({ status: true, data: data });
+      return res.status(200).json({ status: true, data: data });
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ status: false, message: error });
   }
 };
 

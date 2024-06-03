@@ -8,6 +8,7 @@ const guruRoute = require("./routes/guruRoute");
 const mapelRoute = require("./routes/mapelRoute");
 const siswaRoute = require("./routes/siswaRoute");
 const authRoute = require("./routes/authRoute");
+const kasRoute = require("./routes/kasRoute");
 
 app.use(cors());
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use("/guru", guruRoute);
 app.use("/mapel", mapelRoute);
 app.use("/siswa", siswaRoute);
 app.use("/auth", authRoute);
+app.use("/kas", kasRoute);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
