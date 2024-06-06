@@ -2,7 +2,10 @@ const supabase = require("../lib/supabase");
 
 const getKas = async (req, res) => {
   try {
-    const { data, error } = await supabase.from("data-kas").select();
+    const { data, error } = await supabase
+      .from("data-kas")
+      .select()
+      .order("id", { ascending: true });
     if (error) {
       return res
         .status(401)
@@ -116,6 +119,7 @@ const updateKas = async (req, res) => {
         nominal: req.body.nominal,
         tgl_transaksi: req.body.tgl_transaksi,
         user: req.body.user,
+        jabatan: req.body.jabatan,
         deskripsi: req.body.deskripsi,
       })
       .eq("id", req.body.id);

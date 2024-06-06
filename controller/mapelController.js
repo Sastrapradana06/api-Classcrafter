@@ -2,7 +2,10 @@ const supabase = require("../lib/supabase");
 
 const getMapel = async (req, res) => {
   try {
-    const { data, error } = await supabase.from("data-mapel").select();
+    const { data, error } = await supabase
+      .from("data-mapel")
+      .select()
+      .order("id", { ascending: true });
     if (error) {
       return res
         .status(404)
