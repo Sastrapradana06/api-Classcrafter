@@ -15,9 +15,9 @@ const uploadProfile = async (req, res) => {
     const filePath = file.path;
     const fileBuffer = fs.readFileSync(filePath);
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("profile-siswa-classcrafter")
-      .upload(`public/${idUser}`, fileBuffer, {
+      .upload(`${idUser}/${file.originalname}`, fileBuffer, {
         cacheControl: "3600",
         upsert: true,
         contentType: file.mimetype,
@@ -26,12 +26,12 @@ const uploadProfile = async (req, res) => {
     if (error) {
       return res
         .status(404)
-        .json({ status: false, message: "Gagal Upload Profile" });
+        .json({ status: false, message: "Gagal Upload Profile, Server Error" });
     }
 
-    const { data: publicURL, error: urlError } = supabase.storage
+    const { data: urlImage, error: urlError } = supabase.storage
       .from("profile-siswa-classcrafter")
-      .getPublicUrl(`public/${idUser}`);
+      .getPublicUrl(`${idUser}/${file.originalname}`);
 
     // console.log({ publicURL, urlError });
 
@@ -41,10 +41,22 @@ const uploadProfile = async (req, res) => {
         .json({ status: false, message: "Gagal mendapatkan URL gambar" });
     }
 
+    const { data, error: erroUpdate } = await supabase
+      .from("data-siswa")
+      .update({ image: urlImage.publicUrl })
+      .eq("id", idUser)
+      .select();
+
+    if (erroUpdate) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Gagal Upload Profile, Server Error" });
+    }
+
     return res.status(200).json({
       status: true,
-      message: "Berhasil Upload Profile",
-      url: publicURL,
+      message: "Berhasil memperbarui image profile",
+      data,
     });
   } catch (error) {
     console.log(error);

@@ -17,6 +17,7 @@ const login = async (req, res) => {
         .json({ status: false, message: "Gagal login, email salah" });
     }
 
+    console.log({ password, data: data.password });
     const match = await comparePassword(password, data.password);
     if (!match) {
       return res

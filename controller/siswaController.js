@@ -27,6 +27,7 @@ const insertSiswa = async (req, res) => {
       .json({ status: false, message: "Data tidak boleh kosong" });
 
   const password = data.jabatan.replace(" ", "");
+  console.log({ password });
   const hash = await hashPassword(password);
   const dataInsert = { ...data, password: hash };
   try {
