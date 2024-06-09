@@ -9,8 +9,17 @@ const mapelRoute = require("./routes/mapelRoute");
 const siswaRoute = require("./routes/siswaRoute");
 const authRoute = require("./routes/authRoute");
 const kasRoute = require("./routes/kasRoute");
+const uploadRoute = require("./routes/uploadRoute");
 
-app.use(cors());
+const corsOptions = {
+  origin: ["http://example.com", "http://localhost:5173"],
+  methods: "GET,POST",
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,6 +29,7 @@ app.use("/mapel", mapelRoute);
 app.use("/siswa", siswaRoute);
 app.use("/auth", authRoute);
 app.use("/kas", kasRoute);
+app.use("/upload", uploadRoute);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
