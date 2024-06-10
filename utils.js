@@ -14,4 +14,17 @@ async function comparePassword(plainPassword, hash) {
   }
 }
 
-module.exports = { hashPassword, comparePassword };
+function extractFilePath(url, idUser) {
+  const newUrl = url.replace(
+    `https://skfxqnwtdgazmbpbptmi.supabase.co/storage/v1/object/public/profile-siswa-classcrafter/${idUser}/`,
+    ""
+  );
+  if (newUrl.includes("%20")) {
+    const result = newUrl.replace("%20", " ");
+    return result;
+  } else {
+    return newUrl;
+  }
+}
+
+module.exports = { hashPassword, comparePassword, extractFilePath };

@@ -1,5 +1,8 @@
 const express = require("express");
-const { uploadProfile } = require("../controller/uploadController");
+const {
+  uploadProfile,
+  deleteProfile,
+} = require("../controller/uploadController");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
@@ -19,5 +22,6 @@ const diskStorage = multer.diskStorage({
 const upload = multer({ storage: diskStorage });
 
 router.post("/profile", upload.single("file"), uploadProfile);
+router.post("/delete-profile", deleteProfile);
 
 module.exports = router;
