@@ -11,15 +11,20 @@ const authRoute = require("./routes/authRoute");
 const kasRoute = require("./routes/kasRoute");
 const uploadRoute = require("./routes/uploadRoute");
 
-const corsOptions = {
-  origin: ["http://example.com", "http://localhost:5173"],
-  methods: "GET,POST",
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+// const corsOptions = {
+//   origin: [
+//     "https://jz625g5x-5173.asse.devtunnels.ms/",
+//     "http://localhost:5173",
+//   ],
+//   methods: "GET,POST",
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
