@@ -68,6 +68,8 @@ const uploadProfile = async (req, res) => {
         .json({ status: false, message: "Gagal Upload Profile, Server Error" });
     }
 
+    fs.unlinkSync(filePath);
+
     return res.status(200).json({
       status: true,
       message: "Berhasil memperbarui image profile",
