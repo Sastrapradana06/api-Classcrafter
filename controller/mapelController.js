@@ -68,6 +68,7 @@ const updateMapel = async (req, res) => {
       .update({
         mapel: req.body.mapel,
         jam: req.body.jam,
+        durasi: req.body.durasi,
         hari: req.body.hari,
         nama_guru: req.body.nama_guru,
       })
