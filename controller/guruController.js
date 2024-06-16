@@ -1,6 +1,3 @@
-// require("dotenv").config();
-// const jwt = require("jsonwebtoken");
-// const JWT_SECRET = process.env.JWT_SECRET;
 const supabase = require("../lib/supabase");
 
 const insertGuru = async (req, res) => {
@@ -9,11 +6,17 @@ const insertGuru = async (req, res) => {
       .from("data-guru")
       .insert(req.body)
       .select();
-    console.log({ data, error });
+
     if (error) {
-      return res.status(404).json({
+      if (error.code === "PGRST204") {
+        return res.status(404).json({
+          status: false,
+          message: "Data yang ada masukkan tidak valid",
+        });
+      }
+      return res.status(500).json({
         status: false,
-        message: "Gagal menambahkan data guru, nama guru sudah ada",
+        message: "Gagal, nama guru sudah tersedia",
       });
     }
     return res.status(200).json({

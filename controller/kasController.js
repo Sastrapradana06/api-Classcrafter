@@ -24,7 +24,6 @@ const getKas = async (req, res) => {
 
 const insertKas = async (req, res) => {
   const dataInsert = req.body;
-  console.log({ dataInsert });
   try {
     const { data, error } = await supabase
       .from("data-kas")

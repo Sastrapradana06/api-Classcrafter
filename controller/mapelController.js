@@ -25,9 +25,15 @@ const insertMapel = async (req, res) => {
       .insert(req.body)
       .select();
     if (error) {
+      if (error.code === "PGRST204") {
+        return res.status(404).json({
+          status: false,
+          message: "Data yang ada masukkan tidak valid",
+        });
+      }
       return res.status(500).json({
         status: false,
-        message: "Gagal menambahkan data mapel, nama mapel sudah ada",
+        message: "Gagal, nama mapel sudah tersedia",
       });
     }
     return res.status(200).json({
@@ -47,6 +53,25 @@ const deleteMapel = async (req, res) => {
       .from("data-mapel")
       .delete()
       .eq("id", req.params.id);
+    if (error) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Gagal menghapus data mapel" });
+    }
+    return res
+      .status(200)
+      .json({ status: true, message: "Berhasil menghapus data mapel" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: false, message: error });
+  }
+};
+
+const deleteMapelRecords = async (req, res) => {
+  const { ids } = req.body;
+  try {
+    const { error } = await supabase.from("data-mapel").delete().in("id", ids);
+
     if (error) {
       return res
         .status(404)
@@ -129,4 +154,5 @@ module.exports = {
   deleteMapel,
   updateMapel,
   getMapelId,
+  deleteMapelRecords,
 };

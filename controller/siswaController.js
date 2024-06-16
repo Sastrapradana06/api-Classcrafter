@@ -20,31 +20,66 @@ const getSiswa = async (req, res) => {
 };
 
 const insertSiswa = async (req, res) => {
-  const data = req.body;
-  if (!data)
+  const dataBody = req.body;
+  if (!dataBody)
     return res
       .status(400)
       .json({ status: false, message: "Data tidak boleh kosong" });
 
-  const password = data.jabatan.replace(" ", "");
-  console.log({ password });
-  const hash = await hashPassword(password);
-  const dataInsert = { ...data, password: hash };
+  const hasPasswordKey = dataBody.some((item) =>
+    item.hasOwnProperty("jabatan")
+  );
+  if (!hasPasswordKey) {
+    return res
+      .status(400)
+      .json({ status: false, message: "Data yang ada masukkan tidak valid" });
+  }
+
+  let data = [];
+  // handle multiple data
+  if (Array.isArray(dataBody) && dataBody.length > 0) {
+    for (const item of dataBody) {
+      let password = item.jabatan;
+      if (password.includes(" ")) password = password.replace(" ", "");
+
+      const hash = await hashPassword(password);
+
+      const dataInsert = {
+        ...item,
+        password: hash,
+      };
+
+      data.push(dataInsert);
+    }
+  } else {
+    let password = dataBody.jabatan;
+    if (password.includes(" ")) password = password.replace(" ", "");
+    const hash = await hashPassword(password);
+    const dataInsert = { ...dataBody, password: hash };
+    data = dataInsert;
+  }
+
   try {
-    const { data, error } = await supabase
+    const { data: newSiswa, error } = await supabase
       .from("data-siswa")
-      .insert(dataInsert)
+      .insert(data)
       .select();
     if (error) {
+      if (error.code === "PGRST204") {
+        return res.status(404).json({
+          status: false,
+          message: "Data yang ada masukkan tidak valid",
+        });
+      }
       return res.status(500).json({
         status: false,
-        message: "Gagal menambahkan data siswa, email siswa sudah ada",
+        message: "Gagal, nama siswa sudah tersedia",
       });
     }
     return res.status(200).json({
       status: true,
       message: "Berhasil menambahkan data siswa",
-      data: data,
+      data: newSiswa,
     });
   } catch (error) {
     console.log(error);
