@@ -14,6 +14,7 @@ const corsOptions = {
   origin: [
     "https://api-classcrafter-vfwt.onrender.com",
     "http://localhost:5173",
+    "https://jz625g5x-5173.asse.devtunnels.ms",
   ],
   methods: "GET,POST, DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
