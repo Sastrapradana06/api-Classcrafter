@@ -85,8 +85,6 @@ const deleteProfile = async (req, res) => {
   const idUser = req.body.idUser;
   const urlImgLama = req.body.urlImgLama;
 
-  console.log({ idUser, urlImgLama });
-
   if (!urlImgLama || !idUser) {
     return res
       .status(404)

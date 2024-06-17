@@ -6,6 +6,7 @@ const {
   deleteSiswa,
   updateSiswa,
   getSiswaId,
+  deleteSiswaRecords,
 } = require("../controller/siswaController");
 
 router.get("/", getSiswa);
@@ -14,4 +15,7 @@ router.get("/:id", getSiswaId);
 
 router.post("/tambah", insertSiswa);
 router.post("/update", updateSiswa);
+
+router.delete("/delete-all", deleteSiswaRecords);
+
 module.exports = router;

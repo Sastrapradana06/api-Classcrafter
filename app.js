@@ -11,11 +11,7 @@ const authRoute = require("./routes/authRoute");
 const kasRoute = require("./routes/kasRoute");
 const uploadRoute = require("./routes/uploadRoute");
 const corsOptions = {
-  origin: [
-    "https://api-classcrafter-vfwt.onrender.com",
-    "http://localhost:5173",
-    "https://jz625g5x-5173.asse.devtunnels.ms",
-  ],
+  origin: ["https://api-classcrafter-vfwt.onrender.com"],
   methods: "GET,POST, DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,

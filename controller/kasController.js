@@ -53,8 +53,6 @@ const getKasId = async (req, res) => {
       .select()
       .eq("id", req.params.id);
 
-    console.log({ data });
-
     if (error) {
       return res
         .status(401)
@@ -159,6 +157,25 @@ const deleteKas = async (req, res) => {
   }
 };
 
+const deleteKasRecords = async (req, res) => {
+  const { ids } = req.body;
+  try {
+    const { error } = await supabase.from("data-kas").delete().in("id", ids);
+
+    if (error) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Gagal menghapus data kas" });
+    }
+    return res
+      .status(200)
+      .json({ status: true, message: "Berhasil menghapus data kas" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: false, message: error });
+  }
+};
+
 module.exports = {
   getKas,
   insertKas,
@@ -166,4 +183,5 @@ module.exports = {
   getKasByStatus,
   updateKas,
   deleteKas,
+  deleteKasRecords,
 };

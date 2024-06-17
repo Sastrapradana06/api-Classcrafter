@@ -77,6 +77,25 @@ const deleteGuru = async (req, res) => {
     return res.status(401).json({ status: false, message: error });
   }
 };
+
+const deleteGuruRecords = async (req, res) => {
+  const { ids } = req.body;
+  try {
+    const { error } = await supabase.from("data-guru").delete().in("id", ids);
+
+    if (error) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Gagal menghapus data guru" });
+    }
+    return res
+      .status(200)
+      .json({ status: true, message: "Berhasil menghapus data guru" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: false, message: error });
+  }
+};
 const getGuru = async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -127,4 +146,5 @@ module.exports = {
   insertGuru,
   updateGuru,
   deleteGuru,
+  deleteGuruRecords,
 };

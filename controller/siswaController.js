@@ -107,6 +107,25 @@ const deleteSiswa = async (req, res) => {
   }
 };
 
+const deleteSiswaRecords = async (req, res) => {
+  const { ids } = req.body;
+  try {
+    const { error } = await supabase.from("data-siswa").delete().in("id", ids);
+
+    if (error) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Gagal menghapus data siswa" });
+    }
+    return res
+      .status(200)
+      .json({ status: true, message: "Berhasil menghapus data siswa" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: false, message: error });
+  }
+};
+
 const updateSiswa = async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -178,4 +197,5 @@ module.exports = {
   deleteSiswa,
   updateSiswa,
   getSiswaId,
+  deleteSiswaRecords,
 };

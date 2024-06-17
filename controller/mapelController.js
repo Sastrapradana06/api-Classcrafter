@@ -99,7 +99,6 @@ const updateMapel = async (req, res) => {
       })
       .eq("id", req.body.id)
       .select();
-    console.log({ data, error });
     if (error) {
       return res.status(500).json({
         status: false,
