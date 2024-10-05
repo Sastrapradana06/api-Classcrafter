@@ -37,8 +37,8 @@ const updateGuru = async (req, res) => {
       .update({
         name: req.body.name,
         jekel: req.body.jekel,
-        mapel: req.body.mapel,
-        jadwal: req.body.jadwal,
+        email: req.body.email,
+        notel: req.body.notel,
       })
       .eq("id", req.body.id)
       .select();
@@ -102,6 +102,7 @@ const getGuru = async (req, res) => {
       .from("data-guru")
       .select()
       .order("id", { ascending: true });
+
     if (error) {
       return res
         .status(404)

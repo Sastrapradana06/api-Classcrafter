@@ -25,12 +25,15 @@ const login = async (req, res) => {
     } else {
       const dataUser = {
         id: data.id,
-        name: data.name,
-        jabatan: data.jabatan,
-        email: data.email,
-        notel: data.notel,
-        jekel: data.jekel,
+        username: data.name,
         image: data.image,
+        tanggal_lahir: data.tanggal_lahir,
+        jabatan: data.jabatan,
+        notel: data.notel,
+        email: data.email,
+        jekel: data.jekel,
+        nama_ortu: data.nama_ortu,
+        alamat: data.alamat,
       };
       const JWT_SECRET = process.env.JWT_SECRET;
       const token = jwt.sign({ name: dataUser.name }, JWT_SECRET, {

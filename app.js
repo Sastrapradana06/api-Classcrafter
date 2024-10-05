@@ -11,7 +11,7 @@ const authRoute = require("./routes/authRoute");
 const kasRoute = require("./routes/kasRoute");
 const uploadRoute = require("./routes/uploadRoute");
 const corsOptions = {
-  origin: ["https://classcrafter.vercel.app"],
+  origin: ["https://classcrafter.vercel.app", "http://localhost:5173"],
   methods: "GET,POST, DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
