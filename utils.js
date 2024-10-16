@@ -1,5 +1,12 @@
 const bcrypt = require("bcrypt");
 
+const capitalizeEachWord = (str) => {
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
 async function hashPassword(jabatan) {
   const hash = await bcrypt.hash(jabatan, 10);
   return hash;
@@ -27,4 +34,9 @@ function extractFilePath(url, idUser) {
   }
 }
 
-module.exports = { hashPassword, comparePassword, extractFilePath };
+module.exports = {
+  hashPassword,
+  comparePassword,
+  extractFilePath,
+  capitalizeEachWord,
+};

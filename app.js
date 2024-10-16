@@ -10,6 +10,8 @@ const siswaRoute = require("./routes/siswaRoute");
 const authRoute = require("./routes/authRoute");
 const kasRoute = require("./routes/kasRoute");
 const uploadRoute = require("./routes/uploadRoute");
+const notifRoute = require("./routes/notifRoute");
+
 const corsOptions = {
   origin: ["https://classcrafter.vercel.app", "http://localhost:5173"],
   methods: "GET,POST, DELETE",
@@ -31,6 +33,7 @@ app.use("/siswa", siswaRoute);
 app.use("/auth", authRoute);
 app.use("/kas", kasRoute);
 app.use("/upload", uploadRoute);
+app.use("/notif", notifRoute);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
