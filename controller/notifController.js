@@ -57,7 +57,7 @@ const handleSendNotif = async (req, res) => {
 
   try {
     let emailSuccess = 0;
-    let message = `Berhasil mengirim email ke semua siswa`;
+    let message = `Berhasil mengirim notif email ke semua siswa`;
     const siswa = await getEmailSiswa();
     if (siswa && siswa.length > 0) {
       for (const item of siswa) {
@@ -67,14 +67,18 @@ const handleSendNotif = async (req, res) => {
     }
 
     if (emailSuccess < siswa.length)
-      message = `Berhasil mengirim email ke ${emailSuccess} siswa`;
+      message = `Berhasil mengirim notif email ke ${emailSuccess} siswa`;
 
     res.status(200).json({ status: true, message: message });
   } catch (error) {
     console.error("Error in handleSendNotif:", error);
     res
       .status(500)
-      .json({ status: false, message: "Gagal mengirim email", error: error });
+      .json({
+        status: false,
+        message: "Gagal mengirim notif email",
+        error: error,
+      });
   }
 };
 

@@ -5,13 +5,16 @@ const getSiswa = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("data-siswa")
-      .select()
+      .select(
+        "id, name, tanggal_lahir, email, notel, jabatan, nama_ortu, alamat, jekel, image"
+      )
       .order("id", { ascending: true });
     if (error) {
       return res
         .status(404)
         .json({ status: false, message: "Gagal mengambil data siswa" });
     }
+
     return res.status(200).json({ status: true, data: data });
   } catch (error) {
     console.log(error);
@@ -21,23 +24,23 @@ const getSiswa = async (req, res) => {
 
 const insertSiswa = async (req, res) => {
   const dataBody = req.body;
+
   if (!dataBody)
     return res
       .status(400)
       .json({ status: false, message: "Data tidak boleh kosong" });
 
-  const hasPasswordKey = dataBody.some((item) =>
-    item.hasOwnProperty("jabatan")
-  );
-  if (!hasPasswordKey) {
-    return res
-      .status(400)
-      .json({ status: false, message: "Data yang ada masukkan tidak valid" });
-  }
-
-  let data = [];
   // handle multiple data
+  let data = [];
   if (Array.isArray(dataBody) && dataBody.length > 0) {
+    const hasPasswordKey = dataBody.some((item) =>
+      item.hasOwnProperty("jabatan")
+    );
+    if (!hasPasswordKey) {
+      return res
+        .status(400)
+        .json({ status: false, message: "Data yang ada masukkan tidak valid" });
+    }
     for (const item of dataBody) {
       let password = item.jabatan;
       if (password.includes(" ")) password = password.replace(" ", "");
@@ -170,7 +173,9 @@ const getSiswaId = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("data-siswa")
-      .select()
+      .select(
+        "id, name, tanggal_lahir, email, notel, jabatan, nama_ortu, alamat, jekel, image"
+      )
       .eq("id", req.params.id);
     if (error) {
       return res
